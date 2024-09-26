@@ -1,9 +1,5 @@
 import Phaser from "phaser";
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import WebFontFile from "../lib/WebFontFile";
-
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
     super("PreloadScene");
@@ -28,9 +24,6 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.atlas("lizard", "enemies/lizard.png", "enemies/lizard.json");
     this.load.atlas("treasure", "items/treasure.png", "items/treasure.json");
     this.load.atlas("wizard", "enemies/wizard.png", "enemies/wizard.json");
-
-    const fonts = new WebFontFile(this.load, "Press Start 2P");
-    this.load.addFile(fonts);
   }
 
   create() {

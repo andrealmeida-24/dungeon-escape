@@ -63,10 +63,7 @@ export default class Wizard extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  private handleTileCollision(
-    go: Phaser.GameObjects.GameObject,
-    tile: Phaser.Tilemaps.Tile
-  ) {
+  private handleTileCollision(go: Phaser.GameObjects.GameObject) {
     if (go !== this) {
       return;
     }

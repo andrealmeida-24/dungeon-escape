@@ -1,5 +1,4 @@
 import { SCREEN_CONFIG } from "../config";
-import { sceneEvents } from "../events/eventsHub";
 import { MENU_LINE_HEIGHT, MENU_TEXT_OPTIONS } from "../styles";
 import { GameDifficulty } from "../types";
 

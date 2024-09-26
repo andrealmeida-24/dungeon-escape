@@ -1,16 +1,15 @@
 import BaseScene from "./BaseScene";
 
 export default class ScoreScene extends BaseScene {
-  score!: number;
   constructor() {
-    super("ScoreScene");
+    super("GameFinishedScene");
   }
 
   create() {
-    this.createGameImage();
+    this.createFinishGameText();
   }
 
-  private createGameImage(): void {
+  private createFinishGameText(): void {
     this.add.text(this.screenCenter[0] * 0.8, this.screenCenter[1], `You won!`);
 
     super.handleNavigateToMenu();

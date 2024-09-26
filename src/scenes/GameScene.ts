@@ -169,13 +169,13 @@ export default class Game extends BaseScene {
       undefined,
       this
     );
-    // this.playerWizardsCollider = this.physics.add.collider(
-    //   this.wizards,
-    //   this.faune,
-    //   this.handlePlayerWizardCollision,
-    //   undefined,
-    //   this
-    // );
+    this.playerWizardsCollider = this.physics.add.collider(
+      this.wizards,
+      this.faune,
+      this.handlePlayerWizardCollision,
+      undefined,
+      this
+    );
     this.physics.add.collider(
       this.knives,
       this.wallsLayer,
@@ -227,7 +227,7 @@ export default class Game extends BaseScene {
   }
 
   private handlePlayerWizardCollision(
-    obj1: Phaser.GameObjects.GameObject,
+    _: Phaser.GameObjects.GameObject,
     obj2: Phaser.GameObjects.GameObject
   ) {
     const wizard = obj2 as Wizard;
@@ -272,7 +272,7 @@ export default class Game extends BaseScene {
   }
 
   private handlePlayerChestCollision(
-    obj1: Phaser.GameObjects.GameObject,
+    _: Phaser.GameObjects.GameObject,
     obj2: Phaser.GameObjects.GameObject
   ) {
     const chest = obj2 as Chest;
@@ -298,7 +298,7 @@ export default class Game extends BaseScene {
     this.physics.add.collider(
       this.faune,
       this.openDoor,
-      () => this.scene.start("ScoreScene"),
+      () => this.scene.start("GameFinishedScene"),
       undefined,
       this
     );
@@ -312,7 +312,7 @@ export default class Game extends BaseScene {
     });
   }
 
-  update(t: number, dt: number) {
+  update() {
     if (this.faune) {
       this.faune.update(this.cursors);
     }
