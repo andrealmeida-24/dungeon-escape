@@ -28,3 +28,8 @@ export const CHESTS_TO_FINISH_GAME = 2;
 export const INITIAL_CHESTS_OPENED = 0;
 
 export const MINIMUM_COINS_TO_FINISH_GAME = 350;
+
+export const Z_INDEXES = {
+  faune: 1,
+  pillars: 2,
+};

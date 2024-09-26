@@ -24,6 +24,7 @@ export default class Game extends BaseScene {
   private tileset!: Phaser.Tilemaps.Tileset;
   private map!: Phaser.Tilemaps.Tilemap;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
+  private pillarsLayer!: Phaser.Tilemaps.TilemapLayer;
   private lizards!: Phaser.Physics.Arcade.Group;
   private wizards!: Phaser.Physics.Arcade.Group;
   private playerLizardsCollider?: Phaser.Physics.Arcade.Collider;
@@ -71,6 +72,7 @@ export default class Game extends BaseScene {
     this.tileset = this.map.addTilesetImage("dungeon", "tiles");
     this.map.createLayer("Ground", this.tileset);
     this.wallsLayer = this.map.createLayer("Walls", this.tileset);
+    this.pillarsLayer = this.map.createLayer("Pilars", this.tileset);
     this.closedDoor = this.map.createLayer("ClosedDoor", this.tileset);
   }
 
@@ -147,6 +149,11 @@ export default class Game extends BaseScene {
   }
 
   private createColliders() {
+    this.pillarsLayer.setCollisionByProperty({ collides: true });
+    this.physics.add.collider(this.faune, this.pillarsLayer);
+    this.physics.add.collider(this.lizards, this.pillarsLayer);
+    this.physics.add.collider(this.wizards, this.pillarsLayer);
+
     this.wallsLayer.setCollisionByProperty({ collides: true });
     this.physics.add.collider(this.faune, this.wallsLayer);
     this.physics.add.collider(this.lizards, this.wallsLayer);
