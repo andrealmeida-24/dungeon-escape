@@ -24,9 +24,6 @@ export const FAUNE_DAMAGE_TIME = 0;
 
 export const COINS_TO_INCREASE_AFTER_ENEMY_KILL = 10;
 
-export const CHESTS_TO_FINISH_GAME = 2;
-export const INITIAL_CHESTS_OPENED = 0;
-
 export const MINIMUM_COINS_TO_FINISH_GAME = 350;
 
 export const Z_INDEXES = {

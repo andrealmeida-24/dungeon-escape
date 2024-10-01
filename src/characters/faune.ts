@@ -38,7 +38,8 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
   private damageTime: number;
   private speed: number;
   private knives!: Phaser.Physics.Arcade.Group;
-
+  private movePath: Phaser.Math.Vector2[] = [];
+  private moveToTarget?: Phaser.Math.Vector2;
   private activePotion?: Potions;
   private _coins: number;
   private _health: number;
@@ -58,6 +59,20 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
     this._coins = INITIAL_COINS_COUNT;
     this.speed = FAUNE_SPEED;
     this.anims.play("faune-idle-down");
+  }
+
+  moveAlong(path: Phaser.Math.Vector2[]) {
+    if (!path || path.length <= 0) {
+      return;
+    }
+
+    this.movePath = path;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.moveTo(this.movePath.shift()!);
+  }
+
+  moveTo(target: Phaser.Math.Vector2) {
+    this.moveToTarget = target;
   }
 
   increaseCoinsForLizardKill(): void {
@@ -128,7 +143,6 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
         const coins = this.activeChest.openChest();
         this._coins += coins;
         sceneEvents.emit(EGameEvents.PLAYER_INCREASE_COINS, this._coins);
-        sceneEvents.emit(EGameEvents.CHEST_OPENED);
 
         if (this._coins >= MINIMUM_COINS_TO_FINISH_GAME) {
           sceneEvents.emit(EGameEvents.READY_TO_EXIT);
@@ -156,27 +170,59 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
   private handleFauneMovements(
     cursors: Phaser.Types.Input.Keyboard.CursorKeys
   ): void {
+    // path finding logic
+    let dx = 0;
+    let dy = 0;
+
+    if (this.moveToTarget) {
+      dx = this.moveToTarget.x - this.x;
+      dy = this.moveToTarget.y - this.y;
+
+      if (Math.abs(dx) < 5) {
+        dx = 0;
+      }
+      if (Math.abs(dy) < 5) {
+        dy = 0;
+      }
+
+      if (dx === 0 && dy === 0) {
+        if (this.movePath.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.moveTo(this.movePath.shift()!);
+          return;
+        }
+
+        this.moveToTarget = undefined;
+      }
+    }
+
+    const pathFindingLeftDown = dx < 0;
+    const pathFindingRightDown = dx > 0;
+    const pathFindingUpDown = dy < 0;
+    const pathFindingDownDown = dy > 0;
+
+    // cursors based logic
     const leftDown = cursors.left?.isDown;
     const rightDown = cursors.right?.isDown;
     const upDown = cursors.up?.isDown;
     const downDown = cursors.down?.isDown;
 
-    if (leftDown) {
+    if (leftDown || pathFindingLeftDown) {
       this.anims.play("faune-run-side", true);
       this.setVelocity(-this.speed, 0);
 
       this.scaleX = -1;
       this.body.offset.x = 24;
-    } else if (rightDown) {
+    } else if (rightDown || pathFindingRightDown) {
       this.anims.play("faune-run-side", true);
       this.setVelocity(this.speed, 0);
 
       this.scaleX = 1;
       this.body.offset.x = 8;
-    } else if (upDown) {
+    } else if (upDown || pathFindingUpDown) {
       this.anims.play("faune-run-up", true);
       this.setVelocity(0, -this.speed);
-    } else if (downDown) {
+    } else if (downDown || pathFindingDownDown) {
       this.anims.play("faune-run-down", true);
       this.setVelocity(0, this.speed);
     } else {

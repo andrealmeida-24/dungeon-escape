@@ -4,7 +4,6 @@ export enum EGameEvents {
   PLAYER_DEAD = "player-dead",
   PLAYER_INCREASE_COINS = "player-increase-coins",
   PLAYER_INCREASE_HEALTH = "player-increase-health",
-  CHEST_OPENED = "chest-opened",
   READY_TO_EXIT = "ready-to-exit",
   GAME_FINISHED = "game-finished",
 }

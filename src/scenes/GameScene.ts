@@ -17,12 +17,14 @@ import BaseScene from "./BaseScene";
 import { EGameEvents } from "../events/types";
 import { EEnemyType } from "../enemies/types";
 import Potions from "../items/potions";
+// import findPath from "../utils/findPath";
 
 export default class Game extends BaseScene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private faune!: Faune;
   private tileset!: Phaser.Tilemaps.Tileset;
   private map!: Phaser.Tilemaps.Tilemap;
+  // private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
   private pillarsLayer!: Phaser.Tilemaps.TilemapLayer;
   private lizards!: Phaser.Physics.Arcade.Group;
@@ -70,10 +72,12 @@ export default class Game extends BaseScene {
   private createMap() {
     this.map = this.make.tilemap({ key: "dungeonHard" });
     this.tileset = this.map.addTilesetImage("dungeon", "tiles");
+    // this.groundLayer = this.map.createLayer("Ground", this.tileset);
     this.map.createLayer("Ground", this.tileset);
     this.wallsLayer = this.map.createLayer("Walls", this.tileset);
     this.pillarsLayer = this.map.createLayer("Pilars", this.tileset);
     this.closedDoor = this.map.createLayer("ClosedDoor", this.tileset);
+    this.openDoor = this.map.createLayer("OpenDoor", this.tileset);
   }
 
   private createChests() {
@@ -192,6 +196,13 @@ export default class Game extends BaseScene {
     );
     this.physics.add.collider(
       this.knives,
+      this.pillarsLayer,
+      this.handleKnifePillarCollision,
+      undefined,
+      this
+    );
+    this.physics.add.collider(
+      this.knives,
       this.lizards,
       this.handleKnifeLizardCollision,
       undefined,
@@ -272,6 +283,12 @@ export default class Game extends BaseScene {
     obj1.destroy();
   }
 
+  private handleKnifePillarCollision(obj1: Phaser.GameObjects.GameObject) {
+    this.knives.killAndHide(obj1 as Phaser.Physics.Arcade.Image);
+
+    obj1.destroy();
+  }
+
   private handleKnifeWallCollision(obj1: Phaser.GameObjects.GameObject) {
     this.knives.killAndHide(obj1 as Phaser.Physics.Arcade.Image);
 
@@ -296,16 +313,19 @@ export default class Game extends BaseScene {
     this.faune.setPotion(potion);
   }
 
+  private handlePlayerOpenDoorCollision() {
+    this.scene.start("GameFinishedScene");
+  }
+
   private finishGame() {
     this.closedDoor.setAlpha(0);
     this.physics.world.removeCollider(this.fauneDoorCollider);
-    this.openDoor = this.map.createLayer("OpenDoor", this.tileset);
     this.openDoor.setCollisionByProperty({ collides: true });
     this.openDoor.setDepth(1);
     this.physics.add.collider(
       this.faune,
       this.openDoor,
-      () => this.scene.start("GameFinishedScene"),
+      this.handlePlayerOpenDoorCollision,
       undefined,
       this
     );
@@ -314,8 +334,31 @@ export default class Game extends BaseScene {
   private handleUIEvents() {
     sceneEvents.on(EGameEvents.READY_TO_EXIT, this.finishGame, this);
 
+    // this.input.on(
+    //   Phaser.Input.Events.POINTER_UP,
+    //   (pointer: Phaser.Input.Pointer) => {
+    //     const { worldX, worldY } = pointer;
+
+    //     const startVec = this.groundLayer.worldToTileXY(
+    //       this.faune.x,
+    //       this.faune.y
+    //     );
+    //     const targetVec = this.groundLayer.worldToTileXY(worldX, worldY);
+
+    //     const path = findPath(
+    //       startVec,
+    //       targetVec,
+    //       this.groundLayer,
+    //       this.wallsLayer
+    //     );
+
+    //     this.faune.moveAlong(path);
+    //   }
+    // );
+
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       sceneEvents.off(EGameEvents.READY_TO_EXIT, this.finishGame, this);
+      // this.input.off(Phaser.Input.Events.POINTER_UP);
     });
   }
 

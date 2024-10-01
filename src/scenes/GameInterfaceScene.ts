@@ -2,13 +2,11 @@ import Phaser from "phaser";
 import { sceneEvents } from "../events/eventsHub";
 import BaseScene from "./BaseScene";
 import { EGameEvents } from "../events/types";
-import { CHESTS_TO_FINISH_GAME, INITIAL_CHESTS_OPENED } from "../config";
 
 export default class GameInterfaceScene extends BaseScene {
   private hearts!: Phaser.GameObjects.Group;
   private gameOverImage!: Phaser.GameObjects.Image;
   private _coinsLabel!: Phaser.GameObjects.Text;
-  private chestsOpened = INITIAL_CHESTS_OPENED;
 
   constructor() {
     super("GameInterfaceScene");
@@ -59,12 +57,6 @@ export default class GameInterfaceScene extends BaseScene {
     sceneEvents.on(EGameEvents.PLAYER_DEAD, this.createGameOverText, this);
 
     sceneEvents.on(
-      EGameEvents.CHEST_OPENED,
-      this.handleOpenedChestsCount,
-      this
-    );
-
-    sceneEvents.on(
       EGameEvents.PLAYER_INCREASE_COINS,
       (coins: number) => {
         this._coinsLabel.text = coins.toLocaleString();
@@ -109,14 +101,6 @@ export default class GameInterfaceScene extends BaseScene {
         heartImage.setTexture("ui-heart-empty");
       }
     });
-  }
-
-  private handleOpenedChestsCount() {
-    if (this.chestsOpened === CHESTS_TO_FINISH_GAME) {
-      console.log("Game Over");
-      return;
-    }
-    this.chestsOpened += 1;
   }
 
   private createGameOverText() {
