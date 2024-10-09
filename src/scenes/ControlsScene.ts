@@ -12,6 +12,8 @@ export default class ControlsScene extends BaseScene {
     this.createGameImage();
     this.createBackButton();
     this.backButtonEventsHandler();
+
+    this.cameras.main.fadeIn(500, 0, 0, 0);
   }
 
   private createGameImage(): void {

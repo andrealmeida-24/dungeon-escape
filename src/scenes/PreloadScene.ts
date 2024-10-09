@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { FADE_TIME_DELAY } from "../config";
 
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -28,5 +29,14 @@ export default class PreloadScene extends Phaser.Scene {
 
   create() {
     this.scene.start("InitGame");
+    this.cameras.main.fadeOut(FADE_TIME_DELAY, 0, 0, 0);
+    this.cameras.main.once(
+      Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
+      () => {
+        this.time.delayedCall(FADE_TIME_DELAY, () => {
+          this.scene.start("InitGame");
+        });
+      }
+    );
   }
 }

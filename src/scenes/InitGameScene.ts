@@ -1,5 +1,7 @@
-import { GAME_MENU, SCREEN_CONFIG } from "../config";
+import { MenuButton } from "../components/MenuButton";
+import { FADE_TIME_DELAY, GAME_MENU, SCREEN_CONFIG } from "../config";
 import { sceneEvents } from "../events/eventsHub";
+import { MENU_BUTTONS_GAP } from "../styles";
 
 import { GameDifficulty, Menu } from "../types";
 import BaseScene from "./BaseScene";
@@ -10,14 +12,49 @@ export default class InitGameScene extends BaseScene {
 
   constructor() {
     super("InitGame");
-
     this.menu = GAME_MENU;
   }
 
   create() {
-    this.createMenu(this.menu, this.setupMenuEvents.bind(this));
+    this.fadeIn();
     this.createGameText();
     sceneEvents.emit("game-difficulty", GameDifficulty.EASY);
+  }
+
+  fadeIn() {
+    this.cameras.main.fadeIn(FADE_TIME_DELAY, 0, 0, 0);
+
+    this.cameras.main.once(
+      Phaser.Cameras.Scene2D.Events.FADE_IN_COMPLETE,
+      () => {
+        this.time.delayedCall(FADE_TIME_DELAY, () => {
+          this.createMenu(this.menu);
+        });
+      }
+    );
+  }
+
+  createMenu(menu: any) {
+    let lastMenuPositionY = 0;
+
+    menu.forEach((menuItem: any) => {
+      const menuPosition = [
+        this.screenCenter[0],
+        this.screenCenter[1] + 20 + lastMenuPositionY,
+      ];
+      menuItem.textGO = this.add
+        .dom(
+          menuPosition[0],
+          menuPosition[1],
+          MenuButton({
+            text: menuItem.text,
+          }) as HTMLElement
+        )
+        .setOrigin(0.5, 1);
+
+      lastMenuPositionY += MENU_BUTTONS_GAP;
+      this.setupMenuEvents(menuItem);
+    });
   }
 
   setupMenuEvents(menuItem: any) {
@@ -25,7 +62,17 @@ export default class InitGameScene extends BaseScene {
     textGO.setInteractive();
 
     textGO.on("pointerup", () => {
-      menuItem.scene && this.scene.start(menuItem.scene);
+      this.cameras.main.fadeOut(FADE_TIME_DELAY, 0, 0, 0);
+      textGO.removeInteractive();
+
+      this.cameras.main.once(
+        Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
+        () => {
+          this.time.delayedCall(FADE_TIME_DELAY, () => {
+            menuItem.scene && this.scene.start(menuItem.scene);
+          });
+        }
+      );
     });
   }
 

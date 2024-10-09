@@ -30,3 +30,5 @@ export const Z_INDEXES = {
   faune: 1,
   pillars: 2,
 };
+
+export const FADE_TIME_DELAY = 500;

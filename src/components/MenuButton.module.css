@@ -10,6 +10,10 @@
   transition: all 0.3s ease;
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
   text-shadow: 0 0 5px #4ba747;
+
+  animation: fadeInAnimation ease 3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 
 .retroButton:hover {
@@ -20,4 +24,14 @@
 
 .retroButton:active {
   transform: scale(0.95);
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
