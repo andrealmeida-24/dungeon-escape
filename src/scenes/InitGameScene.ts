@@ -17,7 +17,6 @@ export default class InitGameScene extends BaseScene {
   create() {
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
     this.createGameText();
-
     sceneEvents.emit("game-difficulty", GameDifficulty.EASY);
   }
 
@@ -25,19 +24,7 @@ export default class InitGameScene extends BaseScene {
     const textGO = menuItem.textGO;
     textGO.setInteractive();
 
-    textGO.on("pointerover", () => {
-      textGO.setStyle({ fill: "#4ba747" });
-    });
-
-    textGO.on("pointerout", () => {
-      textGO.setStyle({ fill: "#ffffff" });
-    });
-
     textGO.on("pointerup", () => {
-      if (menuItem.text === "Exit") {
-        this.scene.start("MenuScene", { menuKey: "MENU" });
-        return;
-      }
       menuItem.scene && this.scene.start(menuItem.scene);
     });
   }

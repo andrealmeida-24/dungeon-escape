@@ -1,0 +1,23 @@
+.retroButton {
+  font-family: "Press Start 2P", cursive;
+  font-size: 8px;
+  padding: 6px 16px;
+  border: 2px solid #4ba747;
+  background-color: #000000;
+  color: #4ba747;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  text-shadow: 0 0 5px #4ba747;
+}
+
+.retroButton:hover {
+  background-color: #4ba747;
+  color: #000000;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+}
+
+.retroButton:active {
+  transform: scale(0.95);
+}

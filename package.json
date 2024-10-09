@@ -17,6 +17,7 @@
 	},
 	"dependencies": {
 		"@types/webfontloader": "^1.6.38",
+		"jsx-dom": "^8.1.5",
 		"phaser": "^3.55.2",
 		"webfontloader": "^1.6.28"
 	}

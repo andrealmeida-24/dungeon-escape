@@ -1,5 +1,6 @@
+import { MenuButton } from "../components/MenuButton";
 import { SCREEN_CONFIG } from "../config";
-import { MENU_LINE_HEIGHT, MENU_TEXT_OPTIONS } from "../styles";
+import { MENU_BUTTONS_GAP } from "../styles";
 import { GameDifficulty } from "../types";
 
 export default class BaseScene extends Phaser.Scene {
@@ -22,14 +23,15 @@ export default class BaseScene extends Phaser.Scene {
         this.screenCenter[1] + 20 + lastMenuPositionY,
       ];
       menuItem.textGO = this.add
-        .text(
+        .dom(
           menuPosition[0],
           menuPosition[1],
-          menuItem.text,
-          MENU_TEXT_OPTIONS
+          MenuButton({
+            text: menuItem.text,
+          }) as HTMLElement
         )
         .setOrigin(0.5, 1);
-      lastMenuPositionY += MENU_LINE_HEIGHT;
+      lastMenuPositionY += MENU_BUTTONS_GAP;
       setupMenuEvents(menuItem);
     });
   }
