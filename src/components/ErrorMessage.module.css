@@ -1,0 +1,22 @@
+.retroArcade {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4ba747;
+  font-family: "Press Start 2P", cursive;
+  padding: auto 12px;
+}
+
+.content {
+  text-align: center;
+}
+
+.mainText {
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.subText {
+  font-size: 8px;
+  line-height: 16px;
+}

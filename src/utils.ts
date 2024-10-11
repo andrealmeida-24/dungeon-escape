@@ -63,3 +63,26 @@ export const createMenuEntries = (context: any, menu: Menu) => {
     setupMenuEntryEvents(menuItem, context);
   });
 };
+
+export const getIsOnMobileBrowser = (): boolean => {
+  const userAgent = navigator.userAgent;
+
+  if (!userAgent) {
+    return false;
+  }
+
+  const webMobileRegex = [
+    /Android/i,
+    /BlackBerry/i,
+    /IEMobile/i,
+    /iOS/i,
+    /iPhone/i,
+    /iPod/i,
+    /Ipad/i,
+    /Opera Mini/i,
+    /webOS/i,
+    /Windows Phone/i,
+  ];
+
+  return webMobileRegex.some((toMatchItem) => userAgent.match(toMatchItem));
+};

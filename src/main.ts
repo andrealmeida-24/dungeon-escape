@@ -9,6 +9,7 @@ import BaseScene from "./scenes/BaseScene";
 import ControlsScene from "./scenes/ControlsScene";
 import GameOverScene from "./scenes/GameOverScene";
 import GameFinishedScene from "./scenes/GameFinishedScene";
+import ErrorScene from "./scenes/ErrorScene";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -39,6 +40,7 @@ const config: Phaser.Types.Core.GameConfig = {
     GameInterfaceScene,
     GameFinishedScene,
     GameOverScene,
+    ErrorScene,
   ],
 };
 

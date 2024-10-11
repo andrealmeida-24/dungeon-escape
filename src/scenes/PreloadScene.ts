@@ -1,7 +1,9 @@
 import Phaser from "phaser";
 import { FADE_TIME_DELAY } from "../config";
+import { getIsOnMobileBrowser } from "../utils";
 
 export default class PreloadScene extends Phaser.Scene {
+  isMobileBrowser!: boolean;
   constructor() {
     super("PreloadScene");
   }
@@ -28,13 +30,21 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.atlas("wizard", "enemies/wizard.png", "enemies/wizard.json");
   }
 
+  init() {
+    this.isMobileBrowser = getIsOnMobileBrowser();
+  }
+
   create() {
+    console.log(this.isMobileBrowser);
     this.cameras.main.fadeOut(FADE_TIME_DELAY, 0, 0, 0);
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       () => {
         this.time.delayedCall(FADE_TIME_DELAY, () => {
-          this.scene.start("InitGame");
+          if (this.isMobileBrowser) {
+            return this.scene.start("Error");
+          }
+          return this.scene.start("InitGame");
         });
       }
     );
