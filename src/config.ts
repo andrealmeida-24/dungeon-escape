@@ -10,6 +10,15 @@ export const GAME_MENU: Menu = [
   { scene: "ControlsScene", text: "Controls" },
 ];
 
+export const FINISHED_GAME_MENU: Menu = [
+  { scene: "GameScene", text: "Play Again" },
+  { scene: "InitGame", text: "Exit" },
+];
+
+export const GAME_OVER_MENU: Menu = [
+  { scene: "GameScene", text: "Play Again" },
+];
+
 export const LIZARD_SPEED = 50;
 export const WIZARD_SPEED = 75;
 export const FAUNE_SPEED = 100;

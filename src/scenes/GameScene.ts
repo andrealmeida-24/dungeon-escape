@@ -314,7 +314,7 @@ export default class Game extends BaseScene {
   }
 
   private handlePlayerOpenDoorCollision() {
-    this.scene.start("GameFinishedScene");
+    this.scene.start("GameFinished");
   }
 
   private finishGame() {

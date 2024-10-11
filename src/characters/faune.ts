@@ -92,7 +92,7 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
     this.activePotion = potion;
   }
 
-  handleDamage(dir: Phaser.Math.Vector2, enemy: EEnemyType): void {
+  handleDamage(dir: Phaser.Math.Vector2, enemy: EEnemyType) {
     if (this.healthState === HealthState.DAMAGE || this._health <= 0) {
       return;
     }
@@ -100,16 +100,21 @@ export default class Faune extends Phaser.Physics.Arcade.Sprite {
     enemy === EEnemyType.LIZARD ? --this._health : (this._health -= 2);
 
     if (this._health <= 0) {
-      // game over
       this.healthState = HealthState.DEAD;
       this.anims.play("faune-faint");
       this.setVelocity(0, 0);
-      sceneEvents.emit(EGameEvents.PLAYER_DEAD);
+      this.body.destroy();
+      const dispatchEvent = setTimeout(() => {
+        sceneEvents.emit(EGameEvents.PLAYER_DEAD);
+      }, 250);
+
+      return () => clearTimeout(dispatchEvent);
     } else {
       this.setVelocity(dir.x, dir.y);
       this.setTint(0xff0000);
       this.healthState = HealthState.DAMAGE;
       this.damageTime = 0;
+      return;
     }
   }
 

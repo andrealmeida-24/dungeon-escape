@@ -7,6 +7,7 @@ import InitGameScene from "./scenes/InitGameScene";
 import { SCREEN_CONFIG } from "./config";
 import BaseScene from "./scenes/BaseScene";
 import ControlsScene from "./scenes/ControlsScene";
+import GameOverScene from "./scenes/GameOverScene";
 import GameFinishedScene from "./scenes/GameFinishedScene";
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -37,6 +38,7 @@ const config: Phaser.Types.Core.GameConfig = {
     Game,
     GameInterfaceScene,
     GameFinishedScene,
+    GameOverScene,
   ],
 };
 

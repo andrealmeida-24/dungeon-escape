@@ -12,6 +12,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("ui-heart-full", "ui/ui_heart_full.png");
     this.load.image("weapon_knife", "weapons/weapon_knife.png");
     this.load.image("gameTitle", "ui/game_title.png");
+    this.load.image("gameFinished", "ui/game_finished.png");
     this.load.image("gamePauseImage", "ui/pause_image.png");
     this.load.image("gameOverImage", "ui/game_over_bg.png");
     this.load.image("controlsImage", "menus/controls/controls_bg.png");
@@ -28,7 +29,6 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("InitGame");
     this.cameras.main.fadeOut(FADE_TIME_DELAY, 0, 0, 0);
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,

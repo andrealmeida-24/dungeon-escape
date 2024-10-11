@@ -5,7 +5,6 @@ import { EGameEvents } from "../events/types";
 
 export default class GameInterfaceScene extends BaseScene {
   private hearts!: Phaser.GameObjects.Group;
-  private gameOverImage!: Phaser.GameObjects.Image;
   private _coinsLabel!: Phaser.GameObjects.Text;
 
   constructor() {
@@ -18,7 +17,7 @@ export default class GameInterfaceScene extends BaseScene {
     this.handleUIEvents();
   }
 
-  private createHearts() {
+  private createHearts(): void {
     this.hearts = this.add.group({
       classType: Phaser.GameObjects.Image,
     });
@@ -34,14 +33,14 @@ export default class GameInterfaceScene extends BaseScene {
     });
   }
 
-  private createCoins() {
+  private createCoins(): void {
     this.add.image(6, 26, "treasure", "coin_anim_f0.png");
     this._coinsLabel = this.add.text(12, 20, "0", {
       fontSize: "12px",
     });
   }
 
-  private handleUIEvents() {
+  private handleUIEvents(): void {
     sceneEvents.on(
       EGameEvents.PLAYER_LIZARD_COLLISION,
       this.handlePlayerHealthChanged,
@@ -54,7 +53,7 @@ export default class GameInterfaceScene extends BaseScene {
       this
     );
 
-    sceneEvents.on(EGameEvents.PLAYER_DEAD, this.createGameOverText, this);
+    sceneEvents.on(EGameEvents.PLAYER_DEAD, this.navigateToGameOverScene, this);
 
     sceneEvents.on(
       EGameEvents.PLAYER_INCREASE_COINS,
@@ -92,7 +91,7 @@ export default class GameInterfaceScene extends BaseScene {
     });
   }
 
-  private handlePlayerHealthChanged(health: number) {
+  private handlePlayerHealthChanged(health: number): void {
     this.hearts.children.each((heart, index) => {
       const heartImage = heart as Phaser.GameObjects.Image;
       if (index < health) {
@@ -103,18 +102,8 @@ export default class GameInterfaceScene extends BaseScene {
     });
   }
 
-  private createGameOverText() {
-    this.gameOverImage = this.add.image(
-      this.screenCenter[0],
-      this.screenCenter[1],
-      "gameOverImage"
-    );
-
-    const scaleX = this.cameras.main.width / this.gameOverImage.width;
-    const scaleY = this.cameras.main.height / this.gameOverImage.height;
-    const scale = Math.max(scaleX, scaleY);
-    this.gameOverImage.setScale(scale).setScrollFactor(0);
-
-    super.handleNavigateToMenu();
+  private navigateToGameOverScene(): void {
+    this.physics.pause();
+    this.scene.start("GameOver");
   }
 }
